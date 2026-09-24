@@ -1,0 +1,22 @@
+# Ignore all files with a specific extension (using wildcard '*')
+*.log
+*.tmp
+*.exe
+
+# Ignore an entire directory and all of its contents (end with a slash)
+node_modules/
+dist/
+build/
+.cache/
+
+# Ignore a file only if it is in the root directory (start with a slash)
+/.env
+
+# Ignore all files inside a specific folder, but with an exception (!)
+/config/*
+!/config/settings.json
+
+# Ignore a specific file extension anywhere inside a nested folder structure
+**/logs/*.txt
+
+/assets/
