@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preload" as="image" href="assets/background/night_sky.png" fetchpriority="high">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="css/landing.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="sky" id="sky">
+    <!-- Stars get inserted here by stars.js -->
+  </div>
+
+  <div class="envelope-wrap" id="envelopeTrigger">
+    <img class="frame-a" src="assets/envelope/envelope0_a.png" alt="A sealed envelope">
+    <img class="frame-b" src="assets/envelope/envelope0_b.png" alt="Tilted sealed envelope">
+    <img class="frame-open" id="envelopeOpenFrame" src="" alt="">
+  </div>
+
+  <div class="question-overlay" id="questionOverlay">
+    <div class="question-box" id="questionBox">
+      <span class="tape tape-left"></span>
+      <span class="tape tape-right"></span>
+      <p>What was the first treat I baked for you?</p>
+      <input type="text" id="answerInput" autocomplete="off">
+      <br>
+      <button id="submitAnswer">Open</button>
+    </div>
+  </div>
+
+  <div class="reveal-stage" id="revealStage">
+    <div class="reveal-item item-kiss" id="kissItem">
+      <img class="frame-a" src="assets/misc/kiss_a.png" alt="">
+      <img class="frame-b" src="assets/misc/kiss_b.png" alt="">
+    </div>
+    <audio id="kissVoice" src="assets/audio/voice-memos/kiss.mp3" preload="auto"></audio>
+
+    <div class="reveal-item item-record" id="recordItem">
+      <img class="frame-a" src="assets/record-player/record-player0_a.png" alt="">
+      <img class="frame-b" src="assets/record-player/record-player0_b.png" alt="">
+      <img class="spin-frame" id="recordSpinFrame" src="" alt="">
+    </div>
+    <audio id="recordSong" src="assets/audio/music/loml.mp3" preload="auto"></audio>
+
+    <img id="letterItem" class="reveal-item item-letter" src="assets/misc/letter.png" alt="">
+  </div>
+
+  <script src="scripts/stars.js" defer></script>
+  <script src="scripts/envelope.js" defer></script>
+  <script src="scripts/interactions.js" defer></script>
+
+</body>
+</html>

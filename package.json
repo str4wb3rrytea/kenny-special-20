@@ -1,0 +1,23 @@
+{
+  "name": "kenny-special-20",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "framer-motion": "^13.4.0",
+    "howler": "^2.2.4",
+    "lucide-react": "^1.47.0"
+  }
+}
