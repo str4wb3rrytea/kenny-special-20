@@ -19,5 +19,3 @@ build/
 # Ignore a specific file extension anywhere inside a nested folder structure
 **/logs/*.txt
 
-/assets/
-*.png
