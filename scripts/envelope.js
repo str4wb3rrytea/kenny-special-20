@@ -26,28 +26,34 @@ const OPEN_FRAMES = [
   'assets/envelope/envelope5.png',
   'assets/envelope/envelope6.png',
 ];
-const FRAME_DURATION = 140; // ms per frame — tune opening speed here
+const FRAME_DURATION = 140;
 
-// Preload so the sequence doesn't stutter on first play
-OPEN_FRAMES.forEach(src => { new Image().src = src; });
+// Preload AND decode every frame up front, not just fetch it
+const preloadedFrames = OPEN_FRAMES.map(src => {
+  const img = new Image();
+  img.src = src;
+  return img.decode().catch(() => {}); // catch in case decode isn't supported everywhere
+});
 
 function playEnvelopeOpen(onComplete) {
   const wrap = document.getElementById('envelopeTrigger');
   const openFrame = document.getElementById('envelopeOpenFrame');
 
-  wrap.classList.add('opening');
-  let i = 0;
-  openFrame.src = OPEN_FRAMES[0];
+  Promise.all(preloadedFrames).then(() => {
+    wrap.classList.add('opening');
+    let i = 0;
+    openFrame.src = OPEN_FRAMES[0];
 
-  const step = setInterval(() => {
-    i++;
-    if (i >= OPEN_FRAMES.length) {
-      clearInterval(step);
-      if (onComplete) onComplete();
-      return;
-    }
-    openFrame.src = OPEN_FRAMES[i];
-  }, FRAME_DURATION);
+    const step = setInterval(() => {
+      i++;
+      if (i >= OPEN_FRAMES.length) {
+        clearInterval(step);
+        if (onComplete) onComplete();
+        return;
+      }
+      openFrame.src = OPEN_FRAMES[i];
+    }, FRAME_DURATION);
+  });
 }
 
 function checkAnswer() {

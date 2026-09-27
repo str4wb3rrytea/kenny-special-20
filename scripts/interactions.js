@@ -32,7 +32,16 @@ const RECORD_SPIN_FRAMES = [
   'assets/record-player/record-player16.png',
   'assets/record-player/record-player17.png',
 ];
-RECORD_SPIN_FRAMES.forEach(src => { new Image().src = src; }); // preload
+
+// Preload AND decode every frame up front, so the underlying network
+// fetch + decode is already warmed in the browser's cache
+const recordFramesReady = Promise.all(
+  RECORD_SPIN_FRAMES.map(src => {
+    const img = new Image();
+    img.src = src;
+    return img.decode().catch(() => {});
+  })
+);
 
 const recordItem = document.getElementById('recordItem');
 const recordAudio = document.getElementById('recordSong');
@@ -41,12 +50,21 @@ const recordSpinImg = document.getElementById('recordSpinFrame');
 let recordSpinInterval = null;
 let recordPlaying = false;
 
-function startRecordSpin() {
+async function startRecordSpin() {
+  // Set the first frame and wait for THIS element to actually
+  // decode/render it before revealing it — this is what removes
+  // the "cut to blank, then slowly fill in" flash.
+  recordSpinImg.src = RECORD_SPIN_FRAMES[0];
+  try {
+    await recordSpinImg.decode();
+  } catch (e) {
+    // ignore — if decode() isn't supported, we just proceed without the wait
+  }
+
   recordItem.classList.remove('jiggling');
   recordItem.classList.add('spinning');
-  let i = 0;
-  recordSpinImg.src = RECORD_SPIN_FRAMES[0];
 
+  let i = 0;
   recordSpinInterval = setInterval(() => {
     i = (i + 1) % RECORD_SPIN_FRAMES.length; // loop continuously
     recordSpinImg.src = RECORD_SPIN_FRAMES[i];
@@ -69,11 +87,13 @@ recordItem.addEventListener('click', () => {
     return;
   }
 
-  pauseAllAudio(recordAudio); // stop the kiss voice if it was playing
-  recordPlaying = true;
-  startRecordSpin();
-  recordAudio.currentTime = 0;
-  recordAudio.play();
+  recordFramesReady.then(() => {
+    pauseAllAudio(recordAudio); // stop the kiss voice if it was playing
+    recordPlaying = true;
+    startRecordSpin();
+    recordAudio.currentTime = 0;
+    recordAudio.play();
+  });
 });
 
 recordAudio.addEventListener('ended', () => {
